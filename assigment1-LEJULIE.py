@@ -177,19 +177,39 @@ def calculate_forecast(df_cleaned, p = 4, H = [1,4,8], end_date = '12/1/1999',ta
 
     ## Now calculate the forecasting error and return
 
-    return np.array(Y_actual) - np.array(Yhat)
+    return (np.array(Y_actual) - np.array(Yhat), np.array(Yhat), np.array(Y_actual))
 
 t0 = pd.Timestamp('12/1/1999')
 e = []
 T = []
-for j in range(0, 10):
+Yhat_plot = []
+Y_actual_plot = []
+
+for j in range(0, 281):
     t0 = t0 + pd.DateOffset(months=1)
     print(f'Using data up to {t0}')
-    ehat = calculate_forecast(df_cleaned, p = 4, H = [1,4,8], end_date = t0)
+    ehat, yh, ya = calculate_forecast(df_cleaned, p = 4, H = [1, 4, 8], end_date = t0)
     e.append(ehat.flatten())
+    Yhat_plot.append(yh.flatten())
+    Y_actual_plot.append(ya.flatten())
     T.append(t0)
 
-## Create a pandas DataFrame from the list
 edf = pd.DataFrame(e)
+yhdf = pd.DataFrame(Yhat_plot)
+yadf = pd.DataFrame(Y_actual_plot)
+
+fig, axs = plt.subplots(3, 1, figsize=(8, 6))
+
+H = [1, 4, 8]
+dates = pd.to_datetime(df_cleaned['sasdate'][489:770], format='%m/%d/%Y')
+for i, h in enumerate(H):
+    axs[i].plot(dates, yadf[i], color='blue', label='Actual data')
+    axs[i].plot(dates, yhdf[i], color='red', label=f'Prediction for t+{h}')
+    axs[i].legend()
+    axs[i].set_title(f'h={h}')
+
+plt.tight_layout()
+plt.show()
+
 ## Calculate the RMSFE, that is, the square root of the MSFE
 np.sqrt(edf.apply(np.square).mean())
