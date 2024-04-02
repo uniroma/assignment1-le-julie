@@ -1,9 +1,16 @@
+## Importing libraries in Python allows us to expand the functionality
+## of the language. These libraries contain pre-written code that help
+## us perform various tasks: i.e. Numpy and Pandas are for data manipulation,
+## and Matplotlib for data visualization.
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
-## THE FRED-MD DATASET
+## THE FRED-MD DATASET is a datased provided by the Federal Reserve Bank
+## of St.Louise including a wide range of macrovariables.
+## We will manipulate these datas in order to develop a forecasting model
 
 df = pd.read_csv("/Users/biancadiveroli/Downloads/current (1).csv")
 # Clean the DataFrame by removing the row with transformation codes
@@ -211,5 +218,12 @@ for i, h in enumerate(H):
 plt.tight_layout()
 plt.show()
 
-## Calculate the RMSFE, that is, the square root of the MSFE
+## Calculate the RMSFE
+## We use the Root Mean Squared Forecast Error to evaluate the accuracy
+## and reliability of our forecasting model. It's calculated by taking
+## the square root of the average of the squared differences between the
+## predicted values and the actual values. Hence, it provides a measure
+## of deviation from observed values (on average). Lower RMSFE indicates
+## better predicting performance.
+
 np.sqrt(edf.apply(np.square).mean())
