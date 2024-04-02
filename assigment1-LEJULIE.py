@@ -227,3 +227,30 @@ plt.show()
 ## better predicting performance.
 
 np.sqrt(edf.apply(np.square).mean())
+
+## We now want to perform a forecast analysis for the other variables:
+## inflation rate and interest rate.
+
+Yraw2 = df_cleaned['CPIAUCSL']
+Xraw2 = df_cleaned[['INDPRO','TB3MS']]
+
+## We need to establish the number of lags and leads
+num_lags2 = 4
+num_leads2 = 1
+X2 = pd.DataFrame()
+
+## We want a loop in which we insert the lagged values for Y and X.
+
+col2 = 'CPIAUSCSL'
+for lag in range(0,num_lags2+1):
+  X2[f'{col2}_lag{lag}'] = Yraw2.shift(lag)
+
+for lag in range(0,num_lags2+1):
+  X2[f'{col2}_lag{lag}'] = Xraw2[col].shift(lag)
+
+X2
+## X2 has 5 Columns: CPIAUSCSL lagged by p going from 0 to 4 (1 year)
+## We add a column of ones in order to have the intercept
+
+X2.insert (0, 'Ones', np.ones(len(X2)))
+X2
