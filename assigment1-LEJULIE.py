@@ -12,7 +12,7 @@ import matplotlib.dates as mdates
 ## of St.Louise including a wide range of macrovariables.
 ## We will manipulate these datas in order to develop a forecasting model
 
-df = pd.read_csv("/Users/biancadiveroli/Downloads/current (1).csv")
+df = pd.read_csv("/Users/admin/Downloads/current (1).csv")
 # Clean the DataFrame by removing the row with transformation codes
 df_cleaned = df.drop(index=0)
 df_cleaned.reset_index(drop=True, inplace=True)
@@ -227,3 +227,6 @@ plt.show()
 ## better predicting performance.
 
 np.sqrt(edf.apply(np.square).mean())
+rmsfe = np.sqrt(edf.apply(np.square).mean())
+print(rmsfe)
+print (edf)
