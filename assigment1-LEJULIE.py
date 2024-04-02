@@ -230,3 +230,79 @@ np.sqrt(edf.apply(np.square).mean())
 rmsfe = np.sqrt(edf.apply(np.square).mean())
 print(rmsfe)
 print (edf)
+
+##Forecast Model for Inflation(CPIAUCSL)
+t0 = pd.Timestamp('12/1/1999')
+e = []
+T = []
+CPIhat_plot = []
+CPI_actual_plot = []
+
+for j in range(0, 281):
+    t0 = t0 + pd.DateOffset(months=1)
+    print(f'Using data up to {t0}')
+    ehat, CPIh, CPIa = calculate_forecast(df_cleaned, p = 4, H = [1, 4, 8], end_date = t0,target = 'CPIAUCSL', xvars = ['INDPRO', 'TB3MS'])
+    e.append(ehat.flatten())
+    CPIhat_plot.append(CPIh.flatten())
+    CPI_actual_plot.append(CPIa.flatten())
+    T.append(t0)
+
+edf = pd.DataFrame(e)
+cpihdf = pd.DataFrame(CPIhat_plot)
+cpiadf = pd.DataFrame(CPI_actual_plot)
+
+fig, axs = plt.subplots(3, 1, figsize=(8, 6))
+
+H = [1, 4, 8]
+dates = pd.to_datetime(df_cleaned['sasdate'][489:770], format='%m/%d/%Y')
+for i, h in enumerate(H):
+    axs[i].plot(dates, cpiadf[i], color='blue', label='Actual data')
+    axs[i].plot(dates, cpihdf[i], color='red', label=f'Prediction for t+{h}')
+    axs[i].legend()
+    axs[i].set_title(f'h={h}')
+
+plt.tight_layout()
+plt.show()
+
+np.sqrt(edf.apply(np.square).mean())
+rmsfe = np.sqrt(edf.apply(np.square).mean())
+print(rmsfe)
+print (edf)
+
+##Forcast model for Interest rate(TB3MS)
+t0 = pd.Timestamp('12/1/1999')
+e = []
+T = []
+rhat_plot = []
+r_actual_plot = []
+
+for j in range(0, 281):
+    t0 = t0 + pd.DateOffset(months=1)
+    print(f'Using data up to {t0}')
+    ehat, rh, ra = calculate_forecast(df_cleaned, p = 4, H = [1, 4, 8], end_date = t0,target = 'TB3MS', xvars = ['INDPRO', 'CPIAUCSL'])
+    e.append(ehat.flatten())
+    rhat_plot.append(rh.flatten())
+    r_actual_plot.append(ra.flatten())
+    T.append(t0)
+
+edf = pd.DataFrame(e)
+rhdf = pd.DataFrame(rhat_plot)
+radf = pd.DataFrame(r_actual_plot)
+
+fig, axs = plt.subplots(3, 1, figsize=(8, 6))
+
+H = [1, 4, 8]
+dates = pd.to_datetime(df_cleaned['sasdate'][489:770], format='%m/%d/%Y')
+for i, h in enumerate(H):
+    axs[i].plot(dates, radf[i], color='blue', label='Actual data')
+    axs[i].plot(dates, rhdf[i], color='red', label=f'Prediction for t+{h}')
+    axs[i].legend()
+    axs[i].set_title(f'h={h}')
+
+plt.tight_layout()
+plt.show()
+
+np.sqrt(edf.apply(np.square).mean())
+rmsfe = np.sqrt(edf.apply(np.square).mean())
+print(rmsfe)
+print (edf)
