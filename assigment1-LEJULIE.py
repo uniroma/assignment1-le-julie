@@ -185,6 +185,7 @@ def calculate_forecast(df_cleaned, p = 4, H = [1,4,8], end_date = '12/1/1999',ta
     ## Now calculate the forecasting error and return
 
     return (np.array(Y_actual) - np.array(Yhat), np.array(Yhat), np.array(Y_actual))
+    
 e_y, e_cpi, e_r = [], [], []
 T_1, T_2, T_3 = [], [], []
 Yhat, CPIhat, rhat = [], [], []
@@ -215,7 +216,6 @@ dataframes = [yhdf, yadf, cpihdf, cpiadf, rhdf, radf]
 titles = ['Industrial Production', 'Inflation (CPI)', '3-month Treasury Bill rate']
 h_values = [1, 4, 8]
 dates = pd.to_datetime(df_cleaned['sasdate'][489:770], format='%m/%d/%Y')
-
 
 figures = []
 axes = []
