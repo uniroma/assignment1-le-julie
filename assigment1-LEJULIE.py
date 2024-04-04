@@ -194,7 +194,8 @@ Y_actual, CPI_actual, r_actual  = [], [], []
 indpro = e_y, Yhat, Y_actual, T_1
 inflation = e_cpi, CPIhat, CPI_actual, T_2
 intrates = e_r, rhat, r_actual, T_3
-    
+
+##We now use a for loop in order to predict the path of industrial production, CPI and the interest rate of Treasury Bill      
 for t, v, s in ('INDPRO', ['CPIAUCSL', 'TB3MS'], indpro), ('CPIAUCSL', ['TB3MS', 'INDPRO'], inflation), ('TB3MS', ['CPIAUCSL', 'INDPRO'], intrates):
     t0 = pd.Timestamp('12/1/1999')
     for j in range(0, 281):
@@ -262,4 +263,17 @@ for variable, errors in ('industrial prodcution', edf), ('inflation', ecpidf), (
 for variable, errors in ('industrial prodcution', edf), ('inflation', ecpidf), ('interest rates', erdf):
     msfe = (errors.apply(np.square).mean())
     print(f'The MSFEs of the forecasts of {variable} are: {msfe[0]:.6f} for h = 1, {msfe[1]:.6f} for h = 4, {msfe[2]:.6f} for h = 8')
-
+    
+##The RMSFE for industrial production is 1.26 when h=1, 1.25 for h=4
+##and 1.24 for h=8.
+##The RMSFE for inflation is 0.30 for h=1, 0.32 when h=4 
+##and  0.31 for h=8.
+##The RMSFE for interest rate is 0.21 for h=1, 0.24 for h=4. and 0.20
+##for h=8. So for all the 3 varibles the results suggest that
+##the models are adequate in predicting the path of the variables. What we
+##can notice is that the lowest RSFME for industrial production
+##and the interest rate is for h=8. Actually,these values are not 
+##so different from the respective RMSFE when we use h=1. 
+##As for inflation, looking at the graph and also at our results,
+##we can deduce that the model has a better 
+##performance for h=1.
