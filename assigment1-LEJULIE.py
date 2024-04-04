@@ -206,6 +206,11 @@ for t, v, s in ('INDPRO', ['CPIAUCSL', 'TB3MS'], indpro), ('CPIAUCSL', ['TB3MS',
         s[2].append(ya.flatten())
         s[3].append(t0)
 
+## dividing the series related to r by 100, as the data was unnecessarily multiplied by 100 by the calculate_forecast function
+
+for i in (e_r, r_actual, rhat):
+    i[:] = [x / 100 for x in i]
+    
 edf, yhdf, yadf, T1df = pd.DataFrame(e_y), pd.DataFrame(Yhat), pd.DataFrame(Y_actual), pd.DataFrame(T_1)
 ecpidf, cpihdf, cpiadf, T2df = pd.DataFrame(e_cpi), pd.DataFrame(CPIhat), pd.DataFrame(CPI_actual), pd.DataFrame(T_2)
 erdf, rhdf, radf, T3df = pd.DataFrame(e_r), pd.DataFrame(rhat), pd.DataFrame(r_actual), pd.DataFrame(T_3)
